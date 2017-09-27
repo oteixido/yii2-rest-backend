@@ -22,7 +22,12 @@
     },
     "autoload": {
         "psr-4": {
-            "oteixido\\yii2-rest\\": ""
+            "oteixido\\yii2\\rest\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "oteixido\\yii2\\rest\\": "tests/"
         }
     }
 }
