@@ -1,0 +1,28 @@
+{
+    "name": "oteixido/yii2-rest-backend",
+    "description": "Components to use a REST backend on Yii2 applications",
+    "type": "yii2-extension",
+    "keywords": ["yii2","extension"],
+    "license": "GPL-3.0",
+    "authors": [
+        {
+            "name": "Oriol Teixidó",
+            "email": "oriol.teixido@gmail.com"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2": "*",
+        "ext-curl": "*"
+    },
+    "require-dev": {
+        "codeception/base": "^2.2.3",
+        "codeception/verify": "~0.3.1",
+        "codeception/specify": "~0.4.3",
+        "guzzlehttp/guzzle": "~6.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "oteixido\\yii2-rest\\": ""
+        }
+    }
+}
