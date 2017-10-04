@@ -8,7 +8,7 @@ use yii\db\QueryInterface;
 use yii\base\Component;
 use yii\base\InvalidConfigException;
 use yii\base\NotSupportedException;
-use oteixido\yii2\rest\HttpClient;
+use oteixido\yii2\rest\http\HttpClient;
 
 /**
  * RestActiveQuery represents a HTTP REST query associated with an Active Record class.

@@ -1,8 +1,8 @@
 <?php
 
 use oteixido\yii2\rest\RestActiveQuery;
-use oteixido\yii2\rest\HttpClient;
-use oteixido\yii2\rest\HttpResponse;
+use oteixido\yii2\rest\http\HttpClient;
+use oteixido\yii2\rest\http\HttpResponse;
 use Codeception\Util\Stub;
 
 class RestActiveQueryObjectMock extends \yii\base\Component
