@@ -1,6 +1,5 @@
 <?php
-
-namespace oteixido\yii2\rest\helpers;
+namespace oteixido\rest\helpers;
 
 class UrlHelper
 {

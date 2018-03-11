@@ -20,35 +20,35 @@ class UnitTester extends \Codeception\Actor
 {
     use _generated\UnitTesterActions;
 
-   /**
-    * Define custom actions here
-    */
-    public function assertUrlEquals($expected, $actual, $message = '')
-    {
-        if ($this->_assertUrlKey('scheme', $expected, $actual, $message))
-            if ($this->_assertUrlKey('host', $expected, $actual, $message))
-                if ($this->_assertUrlKey('port', $expected, $actual, $message))
-                    if ($this->_assertUrlKey('user', $expected, $actual, $message))
-                        if ($this->_assertUrlKey('pass', $expected, $actual, $message))
-                            if ($this->_assertUrlKey('path', $expected, $actual, $message))
-                                if ($this->_assertUrlKey('query', $expected, $actual, $message, $query = true))
-                                    if ($this->_assertUrlKey('fragment', $expected, $actual, $message))
-                                        $this->assertTrue(true, $message);
-    }
+    /**
+     * Define custom actions here
+     */
+     public function assertUrlEquals($expected, $actual, $message = '')
+     {
+         if ($this->_assertUrlKey('scheme', $expected, $actual, $message))
+             if ($this->_assertUrlKey('host', $expected, $actual, $message))
+                 if ($this->_assertUrlKey('port', $expected, $actual, $message))
+                     if ($this->_assertUrlKey('user', $expected, $actual, $message))
+                         if ($this->_assertUrlKey('pass', $expected, $actual, $message))
+                             if ($this->_assertUrlKey('path', $expected, $actual, $message))
+                                 if ($this->_assertUrlKey('query', $expected, $actual, $message, $query = true))
+                                     if ($this->_assertUrlKey('fragment', $expected, $actual, $message))
+                                         $this->assertTrue(true, $message);
+     }
 
-    private function _assertUrlKey($key, $expected, $actual, $message, $query = false)
-    {
-        $expectedParsed = parse_url($expected);
-        $actualParsed = parse_url($actual);
+     private function _assertUrlKey($key, $expected, $actual, $message, $query = false)
+     {
+         $expectedParsed = parse_url($expected);
+         $actualParsed = parse_url($actual);
 
-        if (array_key_exists($key, $expectedParsed) && array_key_exists($key, $actualParsed)) {
-            if (urldecode($expectedParsed[$key]) == urldecode($actualParsed[$key]))
-                return true;
-        }
-        if (!array_key_exists($key, $expectedParsed) && !array_key_exists($key, $actualParsed)) {
-            return true;
-        }
-        $this->assertEquals($expected, $actual, $message);
-        return false;
-    }
+         if (array_key_exists($key, $expectedParsed) && array_key_exists($key, $actualParsed)) {
+             if (urldecode($expectedParsed[$key]) == urldecode($actualParsed[$key]))
+                 return true;
+         }
+         if (!array_key_exists($key, $expectedParsed) && !array_key_exists($key, $actualParsed)) {
+             return true;
+         }
+         $this->assertEquals($expected, $actual, $message);
+         return false;
+     }
 }

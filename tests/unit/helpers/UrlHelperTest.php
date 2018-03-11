@@ -1,6 +1,5 @@
 <?php
-
-use oteixido\yii2\rest\helpers\UrlHelper;
+use oteixido\rest\helpers\UrlHelper;
 
 class UrlHelperTest extends \Codeception\Test\Unit
 {
