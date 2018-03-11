@@ -1,6 +1,5 @@
 <?php
-
-use oteixido\yii2\rest\HttpResponse;
+use oteixido\rest\http\HttpResponse;
 
 class ResponseTest extends \Codeception\Test\Unit
 {

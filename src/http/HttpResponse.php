@@ -1,5 +1,5 @@
 <?php
-namespace oteixido\yii2\rest;
+namespace oteixido\rest\http;
 
 use yii\base\Component;
 
@@ -36,11 +36,12 @@ class HttpResponse extends Component
      * @param string $content content of the response.
      * @param string[] $headers headers of the response.
      */
-    public function __construct($code = HTTP_OK, $content = '', $headers = [])
+    public function __construct($code = HTTP_OK, $content = '', $headers = [], $config = [])
     {
         $this->_code = $code;
         $this->_content = $content;
         $this->_headers = $headers;
+        parent::__construct($config);
     }
 
     /**
