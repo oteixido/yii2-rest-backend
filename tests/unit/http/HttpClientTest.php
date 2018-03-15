@@ -1,6 +1,4 @@
 <?php
-use \Codeception\Stub\Expected;
-
 use oteixido\rest\http\HttpClient;
 use oteixido\rest\http\CurlFacade;
 

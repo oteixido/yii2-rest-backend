@@ -36,19 +36,36 @@ class UnitTester extends \Codeception\Actor
                                          $this->assertTrue(true, $message);
      }
 
-     private function _assertUrlKey($key, $expected, $actual, $message, $query = false)
-     {
-         $expectedParsed = parse_url($expected);
-         $actualParsed = parse_url($actual);
+    /**
+     * Call protected/private method of a class.
+     *
+     * @param object &$object    Instantiated object that we will run method on.
+     * @param string $methodName Method name to call
+     * @param array  $parameters Array of parameters to pass into method.
+     *
+     * @return mixed Method return.
+     */
+    public function invokeMethod(&$object, $methodName, array $parameters = array())
+    {
+        $reflection = new \ReflectionClass(get_class($object));
+        $method = $reflection->getMethod($methodName);
+        $method->setAccessible(true);
+        return $method->invokeArgs($object, $parameters);
+    }
 
-         if (array_key_exists($key, $expectedParsed) && array_key_exists($key, $actualParsed)) {
-             if (urldecode($expectedParsed[$key]) == urldecode($actualParsed[$key]))
-                 return true;
-         }
-         if (!array_key_exists($key, $expectedParsed) && !array_key_exists($key, $actualParsed)) {
-             return true;
-         }
-         $this->assertEquals($expected, $actual, $message);
-         return false;
-     }
+    private function _assertUrlKey($key, $expected, $actual, $message, $query = false)
+    {
+        $expectedParsed = parse_url($expected);
+        $actualParsed = parse_url($actual);
+
+        if (array_key_exists($key, $expectedParsed) && array_key_exists($key, $actualParsed)) {
+            if (urldecode($expectedParsed[$key]) == urldecode($actualParsed[$key]))
+                return true;
+        }
+        if (!array_key_exists($key, $expectedParsed) && !array_key_exists($key, $actualParsed)) {
+            return true;
+        }
+        $this->assertEquals($expected, $actual, $message);
+        return false;
+    }
 }

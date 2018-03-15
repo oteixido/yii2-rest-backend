@@ -1,22 +1,21 @@
 <?php
-
-namespace oteixido\yii2\rest;
+namespace oteixido\rest;
 
 use yii\data\BaseDataProvider;
 use yii\data\DataProviderInterface;
 use Yii;
 
 /**
- * RestDataProvider implements a data provider based on a HTTP REST service.
+ * DataProvider implements a data provider based on a HTTP REST service.
  *
  * RestDataProvider will provide the data after sorting and/or pagination.
  * You may configure the [[sort]] and [[pagination]] properties to
  * customize the sorting and pagination behaviors.
  *
- * RestDataProvider may be used in the following way:
+ * DataProvider may be used in the following way:
  *
  * ```php
- * $provider = new RestDataProvider([
+ * $provider = new DataProvider([
  *     'query' => $query,
  *     'sort' => [
  *         'attributes' => ['username', 'description'],
@@ -29,10 +28,10 @@ use Yii;
  *
  * @author Oriol Teixidó <oriol.teixido@gmail.com>
  */
-class RestDataProvider extends BaseDataProvider implements DataProviderInterface
+class DataProvider extends BaseDataProvider implements DataProviderInterface
 {
     /**
-     * @var RestQueryInterface the query that is used to fetch data models.
+     * @var QueryInterface the query that is used to fetch data models.
      */
     public $query = null;
 
