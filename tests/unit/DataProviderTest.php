@@ -6,16 +6,6 @@ use Codeception\Util\Stub;
 use oteixido\rest\DataProvider;
 use oteixido\rest\ActiveQuery;
 
-class Model extends \yii\base\Model
-{
-    public $id;
-    public $name;
-    public static function primaryKey()
-    {
-        return [ 'id' ];
-    }
-}
-
 class RestDataProviderTest extends \Codeception\Test\Unit
 {
     public $dataProvider;
