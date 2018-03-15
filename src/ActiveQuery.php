@@ -1,6 +1,5 @@
 <?php
-
-namespace oteixido\yii2\rest;
+namespace oteixido\rest;
 
 use Yii;
 use yii\helpers\ArrayHelper;
@@ -8,14 +7,15 @@ use yii\db\QueryInterface;
 use yii\base\Component;
 use yii\base\InvalidConfigException;
 use yii\base\NotSupportedException;
-use oteixido\yii2\rest\http\HttpClient;
+
+use oteixido\rest\http\HttpClient;
 
 /**
- * RestActiveQuery represents a HTTP REST query associated with an Active Record class.
+ * ActiveQuery represents a HTTP REST query associated with an Active Record class.
  *
  * @author Oriol Teixidó <oriol.teixido@gmail.com>
  */
-class RestActiveQuery extends Component implements QueryInterface
+class ActiveQuery extends Component implements QueryInterface
 {
     public static $DEFAULT_LIMIT = 10;
 
