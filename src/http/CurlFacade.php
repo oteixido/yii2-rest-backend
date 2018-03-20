@@ -2,6 +2,7 @@
 namespace oteixido\rest\http;
 
 use yii\base\Component;
+use Yii;
 
 class CurlFacade extends Component {
     private $_curl = null;
