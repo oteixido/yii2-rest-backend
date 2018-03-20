@@ -26,9 +26,9 @@ class HttpClient extends Component {
     public $sslVerify = true;
     public $postParametersAsHttpQuery = true;
 
-    public function __construct($curl, $config = [])
+    public function __construct($config = [])
     {
-        $this->curl = $curl;
+        $this->curl = new CurlFacade();
         parent::__construct($config);
     }
 
@@ -56,7 +56,7 @@ class HttpClient extends Component {
     {
         Yii::trace("HttpClient::method($method, $url)");
 
-        $this->curl->init(UrlHelper::join([$this->baseUrl, $url]));
+        $this->curl->open(UrlHelper::join([$this->baseUrl, $url]));
         if (!empty($this->username) || !empty($this->password))
             $this->curl->setopt(CURLOPT_USERPWD, $this->username.':'.$this->password);
         $this->curl->setopt(CURLOPT_TIMEOUT, $this->timeout);

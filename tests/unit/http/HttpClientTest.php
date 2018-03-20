@@ -14,6 +14,8 @@ class HttpClientTest extends \Codeception\Test\Unit
         ];
         $content = 'Body Content';
         $this->curl =  $this->makeEmpty(CurlFacade::className(), [
+            'open' => \Codeception\Stub\Expected::atLeastOnce(function ($url) {
+            }),
             'exec' => function () use ($headers, $content) {
                 return implode("\n", $headers)."\n".$content;
             },
@@ -22,7 +24,7 @@ class HttpClientTest extends \Codeception\Test\Unit
                 if ($option == CURLINFO_HEADER_SIZE) return strlen(implode("\n", $headers)."\n");
             },
         ]);
-        $this->client = new HttpClient($this->curl);
+        $this->client = new HttpClient(['curl' => $this->curl]);
     }
 
     public function testGet_ok()
