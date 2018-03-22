@@ -47,9 +47,9 @@ class HttpClient extends Component {
         return $this->method(self::METHOD_PUT, $url, $parameters);
     }
 
-    public function delete($url, $parameters)
+    public function delete($url)
     {
-        throw new Exception('Method not implemented');
+        return $this->method(self::METHOD_DELETE, $url);
     }
 
     private function method($method, $url, $parameters = [])
@@ -66,12 +66,15 @@ class HttpClient extends Component {
         $this->curl->setopt(CURLOPT_SSL_VERIFYHOST, ($this->sslVerify ? 2 : 0));
         $this->curl->setopt(CURLOPT_SSL_VERIFYPEER, ($this->sslVerify ? 1 : 0));
         if ($method == self::METHOD_POST) {
-            $this->curl->setopt($curl, CURLOPT_POST, true);
-            $this->curl->setopt($curl, CURLOPT_POSTFIELDS, $this->postParametersAsHttpQuery ? http_build_query($parameters) : $parameters);
+            $this->curl->setopt(CURLOPT_POST, true);
+            $this->curl->setopt(CURLOPT_POSTFIELDS, $this->postParametersAsHttpQuery ? http_build_query($parameters) : $parameters);
         }
         if ($method == self::METHOD_PUT) {
             $this->curl->setopt(CURLOPT_CUSTOMREQUEST, 'PUT');
-            $this->curl->setopt(CURLOPT_POSTFIELDS, http_build_query($parameters));
+            $this->curl->setopt(CURLOPT_POSTFIELDS, $this->postParametersAsHttpQuery ? http_build_query($parameters) : $parameters);
+        }
+        if ($method == self::METHOD_DELETE) {
+            $this->curl->setopt(CURLOPT_CUSTOMREQUEST, 'DELETE');
         }
         $result = $this->curl->exec();
         $curl_errno = $this->curl->errno();
