@@ -117,7 +117,7 @@ class RestDataProviderTest extends \Codeception\Test\Unit
     {
         $models = [];
         for ($i=1; $i<=$count; $i++) {
-            $models[] = new Model(['id' => $i, 'name' => $prefix.$i]);
+            $models[] = new StubModel(['id' => $i, 'name' => $prefix.$i]);
         }
         return $models;
     }

@@ -1,6 +1,7 @@
 <?php
-class Model extends \yii\base\Model
+class StubModel extends \yii\base\Model
 {
+    private static $baseUri;
     public static $httpClient;
     public $id;
     public $name;
@@ -10,7 +11,17 @@ class Model extends \yii\base\Model
         return [ 'id' ];
     }
 
-    static public function getDb()
+    public static function getListUri()
+    {
+        return self::$baseUri;
+    }
+
+    public static function setBaseUri($baseUri)
+    {
+        self::$baseUri = $baseUri;
+    }
+
+    public static function getDb()
     {
         return self::$httpClient;
     }
