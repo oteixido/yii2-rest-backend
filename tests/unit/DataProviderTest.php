@@ -6,7 +6,7 @@ use Codeception\Util\Stub;
 use oteixido\rest\DataProvider;
 use oteixido\rest\ActiveQuery;
 
-class RestDataProviderTest extends \Codeception\Test\Unit
+class DataProviderTest extends \Codeception\Test\Unit
 {
     public $dataProvider;
 
