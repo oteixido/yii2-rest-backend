@@ -11,14 +11,14 @@ class ActiveQueryTest extends \Codeception\Test\Unit
 
     private function createModel($values)
     {
-        $model = new Model();
-        Model::populateRecord($model, $values);
+        $model = new StubModel();
+        StubModel::populateRecord($model, $values);
         return $model;
     }
 
     private function setHttpClientModels($httpCode, $models)
     {
-        Model::$httpClient = Stub::update(Model::$httpClient, [
+        StubModel::$httpClient = Stub::update(StubModel::$httpClient, [
             'get' => function () use ($httpCode, $models) {
                 return new HttpResponse($httpCode, json_encode($models), [ 'X-Total-Count' => count($models) ]);
             },
@@ -27,8 +27,9 @@ class ActiveQueryTest extends \Codeception\Test\Unit
 
     protected function _before()
     {
-        Model::$httpClient = Stub::makeEmpty(HttpClient::className());
-        $this->activeQuery = new ActiveQuery(Model::className(), 'http://api.model.test');
+        StubModel::setBaseUri('http://localhost.localdomain');
+        StubModel::$httpClient = Stub::makeEmpty(HttpClient::className());
+        $this->activeQuery = new ActiveQuery(StubModel::className());
     }
 
     public function testAllEmpty()
@@ -93,9 +94,9 @@ class ActiveQueryTest extends \Codeception\Test\Unit
 
     public function testWhereEmpty()
     {
-        Stub::update(Model::$httpClient, [
+        Stub::update(StubModel::$httpClient, [
             'get' => \Codeception\Stub\Expected::atLeastOnce(function($url, $valideCodes) {
-                $this->tester->assertEquals('http://api.model.test', $url);
+                $this->tester->assertEquals('http://localhost.localdomain', $url);
                 return new HttpResponse(200, '[]', [ 'X-Total-Count' => 0 ]);
             })
         ]);
@@ -105,9 +106,9 @@ class ActiveQueryTest extends \Codeception\Test\Unit
 
     public function testWhere()
     {
-        Stub::update(Model::$httpClient, [
+        Stub::update(StubModel::$httpClient, [
             'get' => \Codeception\Stub\Expected::atLeastOnce(function($url, $valideCodes) {
-                $this->tester->assertEquals('http://api.model.test?attribute=value', $url);
+                $this->tester->assertEquals('http://localhost.localdomain?attribute=value', $url);
                 return new HttpResponse(200, '[]', [ 'X-Total-Count' => 0 ]);
             })
         ]);
@@ -117,9 +118,9 @@ class ActiveQueryTest extends \Codeception\Test\Unit
 
     public function testWhereNull()
     {
-        Stub::update(Model::$httpClient, [
+        Stub::update(StubModel::$httpClient, [
             'get' => \Codeception\Stub\Expected::atLeastOnce(function($url, $valideCodes) {
-                $this->tester->assertEquals('http://api.model.test?attribute=', $url);
+                $this->tester->assertEquals('http://localhost.localdomain?attribute=', $url);
                 return new HttpResponse(200, '[]', [ 'X-Total-Count' => 0 ]);
             })
         ]);
@@ -129,9 +130,9 @@ class ActiveQueryTest extends \Codeception\Test\Unit
 
     public function testAndWhere()
     {
-        Stub::update(Model::$httpClient, [
+        Stub::update(StubModel::$httpClient, [
             'get' => \Codeception\Stub\Expected::atLeastOnce(function($url, $valideCodes) {
-                $this->tester->assertEquals('http://api.model.test?id=value1&name=value2&attribute3=value3', $url);
+                $this->tester->assertEquals('http://localhost.localdomain?id=value1&name=value2&attribute3=value3', $url);
                 return new HttpResponse(200, '[]', [ 'X-Total-Count' => 0 ]);
             })
         ]);
@@ -143,9 +144,9 @@ class ActiveQueryTest extends \Codeception\Test\Unit
 
     public function testWhereEquals()
     {
-        Stub::update(Model::$httpClient, [
+        Stub::update(StubModel::$httpClient, [
             'get' => \Codeception\Stub\Expected::atLeastOnce(function($url, $valideCodes) {
-                $this->tester->assertEquals('http://api.model.test?attribute=value', $url);
+                $this->tester->assertEquals('http://localhost.localdomain?attribute=value', $url);
                 return new HttpResponse(200, '[]', [ 'X-Total-Count' => 0 ]);
             })
         ]);
@@ -155,9 +156,9 @@ class ActiveQueryTest extends \Codeception\Test\Unit
 
     public function testWhereNotEquals()
     {
-        Stub::update(Model::$httpClient, [
+        Stub::update(StubModel::$httpClient, [
             'get' => \Codeception\Stub\Expected::atLeastOnce(function($url, $valideCodes) {
-                $this->tester->assertEquals('http://api.model.test?attribute_ne=value', $url);
+                $this->tester->assertEquals('http://localhost.localdomain?attribute_ne=value', $url);
                 return new HttpResponse(200, '[]', [ 'X-Total-Count' => 0 ]);
             })
         ]);
@@ -167,9 +168,9 @@ class ActiveQueryTest extends \Codeception\Test\Unit
 
     public function testWhereGreaterThan()
     {
-        Stub::update(Model::$httpClient, [
+        Stub::update(StubModel::$httpClient, [
             'get' => \Codeception\Stub\Expected::atLeastOnce(function($url, $valideCodes) {
-                $this->tester->assertEquals('http://api.model.test?attribute_gte=value', $url);
+                $this->tester->assertEquals('http://localhost.localdomain?attribute_gte=value', $url);
                 return new HttpResponse(200, '[]', [ 'X-Total-Count' => 0 ]);
             })
         ]);
@@ -179,9 +180,9 @@ class ActiveQueryTest extends \Codeception\Test\Unit
 
     public function testWhereLessThan()
     {
-        Stub::update(Model::$httpClient, [
+        Stub::update(StubModel::$httpClient, [
             'get' => \Codeception\Stub\Expected::atLeastOnce(function($url, $valideCodes) {
-                $this->tester->assertEquals('http://api.model.test?attribute_lte=value', $url);
+                $this->tester->assertEquals('http://localhost.localdomain?attribute_lte=value', $url);
                 return new HttpResponse(200, '[]', [ 'X-Total-Count' => 0 ]);
             })
         ]);
@@ -191,9 +192,9 @@ class ActiveQueryTest extends \Codeception\Test\Unit
 
     public function testWhereLike()
     {
-        Stub::update(Model::$httpClient, [
+        Stub::update(StubModel::$httpClient, [
             'get' => \Codeception\Stub\Expected::atLeastOnce(function($url, $valideCodes) {
-                $this->tester->assertEquals('http://api.model.test?attribute_like=value', $url);
+                $this->tester->assertEquals('http://localhost.localdomain?attribute_like=value', $url);
                 return new HttpResponse(200, '[]', [ 'X-Total-Count' => 0 ]);
             })
         ]);
@@ -203,9 +204,9 @@ class ActiveQueryTest extends \Codeception\Test\Unit
 
     public function testFilterWhere()
     {
-        Stub::update(Model::$httpClient, [
+        Stub::update(StubModel::$httpClient, [
             'get' => \Codeception\Stub\Expected::atLeastOnce(function($url, $valideCodes) {
-                $this->tester->assertEquals('http://api.model.test?attribute=value', $url);
+                $this->tester->assertEquals('http://localhost.localdomain?attribute=value', $url);
                 return new HttpResponse(200, '[]', [ 'X-Total-Count' => 0 ]);
             })
         ]);
@@ -215,9 +216,9 @@ class ActiveQueryTest extends \Codeception\Test\Unit
 
     public function testAndFilterWhere()
     {
-        Stub::update(Model::$httpClient, [
+        Stub::update(StubModel::$httpClient, [
             'get' => \Codeception\Stub\Expected::atLeastOnce(function($url, $valideCodes) {
-                $this->tester->assertEquals('http://api.model.test?id=value1&name=value2', $url);
+                $this->tester->assertEquals('http://localhost.localdomain?id=value1&name=value2', $url);
                 return new HttpResponse(200, '[]', [ 'X-Total-Count' => 0 ]);
             })
         ]);
@@ -228,9 +229,9 @@ class ActiveQueryTest extends \Codeception\Test\Unit
 
     public function testFilterWhereEmpty()
     {
-        Stub::update(Model::$httpClient, [
+        Stub::update(StubModel::$httpClient, [
             'get' => \Codeception\Stub\Expected::atLeastOnce(function($url, $valideCodes) {
-                $this->tester->assertEquals('http://api.model.test', $url);
+                $this->tester->assertEquals('http://localhost.localdomain', $url);
                 return new HttpResponse(200, '[]', [ 'X-Total-Count' => 0 ]);
             })
         ]);
@@ -240,9 +241,9 @@ class ActiveQueryTest extends \Codeception\Test\Unit
 
     public function testAndFilterWhereEmpty()
     {
-        Stub::update(Model::$httpClient, [
+        Stub::update(StubModel::$httpClient, [
             'get' => \Codeception\Stub\Expected::atLeastOnce(function($url, $valideCodes) {
-                $this->tester->assertEquals('http://api.model.test?id=value1', $url);
+                $this->tester->assertEquals('http://localhost.localdomain?id=value1', $url);
                 return new HttpResponse(200, '[]', [ 'X-Total-Count' => 0 ]);
             })
         ]);
@@ -253,9 +254,9 @@ class ActiveQueryTest extends \Codeception\Test\Unit
 
     public function testOrderBy()
     {
-        Stub::update(Model::$httpClient, [
+        Stub::update(StubModel::$httpClient, [
             'get' => \Codeception\Stub\Expected::atLeastOnce(function($url, $valideCodes) {
-                $this->tester->assertUrlEquals('http://api.model.test?_sort=id,name&_order=asc,desc', $url);
+                $this->tester->assertUrlEquals('http://localhost.localdomain?_sort=id,name&_order=asc,desc', $url);
                 return new HttpResponse(200, '[]', [ 'X-Total-Count' => 0 ]);
             })
         ]);
@@ -265,9 +266,9 @@ class ActiveQueryTest extends \Codeception\Test\Unit
 
     public function testAddOrderBy()
     {
-        Stub::update(Model::$httpClient, [
+        Stub::update(StubModel::$httpClient, [
             'get' => \Codeception\Stub\Expected::atLeastOnce(function($url, $valideCodes) {
-                $this->tester->assertUrlEquals('http://api.model.test?_sort=id,name&_order=asc,asc', $url);
+                $this->tester->assertUrlEquals('http://localhost.localdomain?_sort=id,name&_order=asc,asc', $url);
                 return new HttpResponse(200, '[]', [ 'X-Total-Count' => 0 ]);
             })
         ]);
@@ -278,9 +279,9 @@ class ActiveQueryTest extends \Codeception\Test\Unit
 
     public function testOffset()
     {
-        Stub::update(Model::$httpClient, [
+        Stub::update(StubModel::$httpClient, [
             'get' => \Codeception\Stub\Expected::atLeastOnce(function($url, $valideCodes) {
-                $this->tester->assertUrlEquals('http://api.model.test?_page=2&_limit=5', $url);
+                $this->tester->assertUrlEquals('http://localhost.localdomain?_page=2&_limit=5', $url);
                 return new HttpResponse(200, '[]', [ 'X-Total-Count' => 0 ]);
             })
         ]);
@@ -291,9 +292,9 @@ class ActiveQueryTest extends \Codeception\Test\Unit
 
     public function testOffsetWithoutLimit()
     {
-        Stub::update(Model::$httpClient, [
+        Stub::update(StubModel::$httpClient, [
             'get' => \Codeception\Stub\Expected::atLeastOnce(function($url, $valideCodes) {
-                $this->tester->assertUrlEquals('http://api.model.test?_page=4&_limit=10', $url);
+                $this->tester->assertUrlEquals('http://localhost.localdomain?_page=4&_limit=10', $url);
                 return new HttpResponse(200, '[]', [ 'X-Total-Count' => 0 ]);
             })
         ]);
@@ -303,9 +304,9 @@ class ActiveQueryTest extends \Codeception\Test\Unit
 
     public function testLimit()
     {
-        Stub::update(Model::$httpClient, [
+        Stub::update(StubModel::$httpClient, [
             'get' => \Codeception\Stub\Expected::atLeastOnce(function($url, $valideCodes) {
-                $this->tester->assertUrlEquals('http://api.model.test?_limit=5', $url);
+                $this->tester->assertUrlEquals('http://localhost.localdomain?_limit=5', $url);
                 return new HttpResponse(200, '[]', [ 'X-Total-Count' => 0 ]);
             })
         ]);
@@ -315,7 +316,7 @@ class ActiveQueryTest extends \Codeception\Test\Unit
 
     public function testAllEmulated()
     {
-        Stub::update(Model::$httpClient, [
+        Stub::update(StubModel::$httpClient, [
             'get' => \Codeception\Stub\Expected::never(),
         ]);
         $this->activeQuery->emulateExecution();
@@ -325,7 +326,7 @@ class ActiveQueryTest extends \Codeception\Test\Unit
 
     public function testCountEmulated()
     {
-        Stub::update(Model::$httpClient, [
+        Stub::update(StubModel::$httpClient, [
             'get' => \Codeception\Stub\Expected::never(),
         ]);
         $this->activeQuery->emulateExecution();
@@ -334,7 +335,7 @@ class ActiveQueryTest extends \Codeception\Test\Unit
 
     public function testOneEmulated()
     {
-        Stub::update(Model::$httpClient, [
+        Stub::update(StubModel::$httpClient, [
             'get' => \Codeception\Stub\Expected::never(),
         ]);
         $this->activeQuery->emulateExecution();
@@ -343,7 +344,7 @@ class ActiveQueryTest extends \Codeception\Test\Unit
 
     public function testExistsEmulated()
     {
-        Stub::update(Model::$httpClient, [
+        Stub::update(StubModel::$httpClient, [
             'get' => \Codeception\Stub\Expected::never(),
         ]);
         $this->activeQuery->emulateExecution();

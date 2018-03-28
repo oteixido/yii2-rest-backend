@@ -13,6 +13,48 @@ use oteixido\rest\http\HttpClient;
 /**
  * ActiveQuery represents a HTTP REST query associated with an Active Record class.
  *
+ * Rest server must implement a query interface similar to https://github.com/typicode/json-server does.
+ *
+ * Filter
+ *
+ *   GET /posts?title=json-server&author=typicode
+ *   GET /posts?id=1&id=2
+ *
+ * Paginate
+ *   Use _page and optionally _limit to paginate returned data.
+ *   In the Link header you'll get first, prev, next and last links.
+ *
+ *   GET /posts?_page=7
+ *   GET /posts?_page=7&_limit=20
+ *
+ *   10 items are returned by default
+ *
+ * Sort
+ *   Add _sort and _order (ascending order by default)
+ *
+ *   GET /posts?_sort=views&_order=asc
+ *   GET /posts/1/comments?_sort=votes&_order=asc
+ *
+ *   For multiple fields, use the following format:
+ *                                                                                                                                                                                                                                                      GET /posts?_sort=user,views&_order=desc,asc
+ * Slice
+ *   Add _start and _end or _limit (an X-Total-Count header is included in the response)
+ *
+ *   GET /posts?_start=20&_end=30
+ *   GET /posts/1/comments?_start=20&_end=30
+ *   GET /posts/1/comments?_start=20&_limit=10
+ *
+ *   Works exactly as Array.slice (i.e. _start is inclusive and _end exclusive)
+ *
+ * Operators
+ *   Add _gte or _lte for getting a range
+ *
+ *   GET /posts?views_gte=10&views_lte=20
+ *
+ *   Add _ne to exclude a value
+ *
+ *   GET /posts?id_ne=1
+ *
  * @author Oriol Teixidó <oriol.teixido@gmail.com>
  */
 class ActiveQuery extends Component implements QueryInterface
@@ -77,23 +119,17 @@ class ActiveQuery extends Component implements QueryInterface
     */
     private $_emulateExecution = false;
 
-    public $url = '';
+    public $uri = '';
     public $multiple = true;
 
-    public function __construct($modelClass, $url = '', $config = [])
+    public function __construct($modelClass, $config = [])
     {
         if (empty($modelClass)) {
             throw new InvalidConfigException('ModelClass can not be empty.');
         }
         $this->modelClass = $modelClass;
-        $this->url = empty($url) ? $modelClass::getUrl() : $url;
+        $this->uri = $modelClass::getListUri();
         parent::__construct($config);
-    }
-
-    public function setUrl($url)
-    {
-        $this->url = $url;
-        return $this;
     }
 
     public function setMultiple($multiple)
@@ -285,7 +321,7 @@ class ActiveQuery extends Component implements QueryInterface
         $modelClass = $this->modelClass;
         $client = $modelClass::getDb();
         $query = array_merge($this->_sortAsQuery(), $this->_paginateAsQuery(), $this->_conditionAsQuery());
-        $url = $this->url . (count($query) ? '?' . http_build_query($query) : '');
+        $url = $this->uri . (count($query) ? '?' . http_build_query($query) : '');
         return $client->get($url, $validCodes = [ HttpClient::HTTP_OK ]);
     }
 
