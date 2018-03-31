@@ -8,7 +8,7 @@ use yii\base\Component;
 use yii\base\InvalidConfigException;
 use yii\base\NotSupportedException;
 
-use oteixido\rest\http\HttpClient;
+use oteixido\rest\http\HttpResponse;
 
 /**
  * ActiveQuery represents a HTTP REST query associated with an Active Record class.
@@ -322,7 +322,7 @@ class ActiveQuery extends Component implements QueryInterface
         $client = $modelClass::getDb();
         $query = array_merge($this->_sortAsQuery(), $this->_paginateAsQuery(), $this->_conditionAsQuery());
         $url = $this->uri . (count($query) ? '?' . http_build_query($query) : '');
-        return $client->get($url, $validCodes = [ HttpClient::HTTP_OK ]);
+        return $client->get($url, $validCodes = [ HttpResponse::HTTP_OK ]);
     }
 
     private function _toModels($elems)
