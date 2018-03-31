@@ -8,8 +8,8 @@ The preferred way to install this extension is through [composer](http://getcomp
 
 Either run
 
-```
-composer require oteixido/yii2-rest-backend "*"
+```bash
+$ composer require oteixido/yii2-rest-backend "*"
 ```
 
 or add
