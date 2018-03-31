@@ -2,6 +2,20 @@
 
 REST backend for Yii2 applications
 
+## Testing
+
+Create docker image *yii2-rest-backend* for testing environment.
+
+```bash
+docker build . --tag yii2-rest-backend
+docker run -it --rm -v "$PWD":/app -w /app yii2-rest-backend composer install
+```
+Execute tests.
+
+```bash
+docker run -it --rm -v "$PWD":/app -w /app yii2-rest-backend ./vendor/bin/codecept run
+```
+
 ## License
 
 [GNU General Public License v3.0](https://www.gnu.org/licenses/gpl-3.0.html)
