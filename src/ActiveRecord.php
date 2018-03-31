@@ -1,6 +1,7 @@
 <?php
 namespace oteixido\rest;
 
+use yii\web\ServerErrorHttpException;
 use Yii;
 
 use oteixido\rest\ActiveQuery;
@@ -10,31 +11,58 @@ use oteixido\rest\helpers\UrlHelper;
 
 abstract class ActiveRecord extends \yii\db\BaseActiveRecord
 {
-    public abstract static function getUrl();
+    /**
+     * Returns the base URI for this model (ex. https://localhost.localdomain/api/v1/posts)
+     * @return string
+     */
+    public abstract static function getBaseUri();
 
-    public function getListUrl()
+    /**
+     * Returns the list URI. By default is the same as getBaseUri()
+     * @return string
+     */
+    public function getListUri()
     {
-        return static::getUrl();
+        return static::getBaseUri();
     }
 
-    public function getCreateUrl()
+    /**
+     * Returns the create URI. By default is the same as getBaseUri()
+     * @return string
+     */
+    public function getCreateUri()
     {
-        return static::getUrl();
+        return static::getBaseUri();
     }
 
-    public function getViewUrl()
+    /**
+     * Returns the view URI. By default is the getBaseUri() followed by a slash and the primary key
+     * value of the model.
+     * @return string
+     */
+    public function getViewUri()
     {
-        return UrlHelper::join([static::getUrl(), $this->getPrimaryKey()]);
+        return UrlHelper::join([static::getBaseUri(), $this->getPrimaryKey()]);
     }
 
-    public function getUpdateUrl()
+    /**
+     * Returns the update URI. By default is the getBaseUri() followed by a slash and the primary key
+     * value of the model.
+     * @return string
+     */
+    public function getUpdateUri()
     {
-        return UrlHelper::join([static::getUrl(), $this->getPrimaryKey()]);
+        return UrlHelper::join([static::getBaseUri(), $this->getPrimaryKey()]);
     }
 
-    public function getDeleteUrl()
+    /**
+     * Returns the delete URI. By default is the getBaseUri() followed by a slash and the primary key
+     * value of the model.
+     * @return string
+     */
+    public function getDeleteUri()
     {
-        return UrlHelper::join([static::getUrl(), $this->getPrimaryKey()]);
+        return UrlHelper::join([static::getBaseUri(), $this->getPrimaryKey()]);
     }
 
     /**
@@ -104,14 +132,12 @@ abstract class ActiveRecord extends \yii\db\BaseActiveRecord
         if (!$this->beforeDelete()) {
             return false;
         }
-        $response = self::getDb()->delete($this->getDeleteUrl());
-        if ($response === false) {
-            Yii::info("Model not deleted due to http error.", __METHOD__);
-            return false;
+        $response = self::getDb()->delete($this->getDeleteUri());
+        if (!in_array($response->getCode(), [HttpResponse::HTTP_OK, HttpResponse::HTTP_NOT_FOUND])) {
+            throw new ServerErrorHttpException("Model not deleted due to http code not valid (".$response->getCode().").");
         }
-        if ($response->getCode() != HttpResponse::HTTP_OK) {
-            Yii::info("Model not deleted due to http code not valid ($response->getCode()).", __METHOD__);
-            return false;
+        if ($response->getCode() == HttpResponse::HTTP_NOT_FOUND) {
+            Yii::info("Model not deleted due to http code not valid (".$response->getCode().").", __METHOD__);
         }
         $this->afterDelete();
         return true;
@@ -148,7 +174,7 @@ abstract class ActiveRecord extends \yii\db\BaseActiveRecord
     private function insertOrUpdate($insert, $runValidation = true, $attributes = null)
     {
         $message = $insert ? 'inserted' : 'updated';
-        $code = $insert ? HttpResponse::HTTP_CREATED : HttpRequest::HTTP_OK;
+        $code = $insert ? HttpResponse::HTTP_CREATED : HttpResponse::HTTP_OK;
 
         if ($runValidation && !$this->validate($attributes)) {
             Yii::info("Model not $message due to validation error.", __METHOD__);
@@ -158,17 +184,12 @@ abstract class ActiveRecord extends \yii\db\BaseActiveRecord
             return false;
         }
         $values = $this->getDirtyAttributes($attributes);
-        $response = $inserted ?
-            self::getDb()->post($this->getCreateUrl(), $values) :
-            self::getDb()->put($this->getUpdateUrl(), $values);
+        $response = $insert ?
+            self::getDb()->post($this->getCreateUri(), $values) :
+            self::getDb()->put($this->getUpdateUri(), $values);
 
-        if ($response === false) {
-            Yii::info("Model not $message due to http error.", __METHOD__);
-            return false;
-        }
         if ($response->getCode() != $code) {
-            Yii::info("Model not $message due to http code not valid ($response->getCode()).", __METHOD__);
-            return false;
+            throw new ServerErrorHttpException("Model not $message due to http code not valid (".$response->getCode().").");
         }
         $record = json_decode($response->getContent(), true);
         self::populateRecord($this, $record);
