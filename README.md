@@ -7,13 +7,13 @@ REST backend for Yii2 applications
 Create docker image *yii2-rest-backend* for testing environment.
 
 ```bash
-docker build . --tag yii2-rest-backend
-docker run -it --rm -v "$PWD":/app -w /app yii2-rest-backend composer install
+$ docker build . --tag yii2-rest-backend
+$ docker run -it --rm -v "$PWD":/app -w /app yii2-rest-backend composer install
 ```
 Execute tests.
 
 ```bash
-docker run -it --rm -v "$PWD":/app -w /app yii2-rest-backend ./vendor/bin/codecept run
+$ docker run -it --rm -v "$PWD":/app -w /app yii2-rest-backend ./vendor/bin/codecept run
 ```
 
 ## License
