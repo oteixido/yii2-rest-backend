@@ -2,6 +2,24 @@
 
 REST backend for Yii2 applications
 
+## Installation
+
+The preferred way to install this extension is through [composer](http://getcomposer.org/download/).
+
+Either run
+
+```
+composer require oteixido/yii2-rest-backend "*"
+```
+
+or add
+
+```
+"caminstech/yii2-rest": "*"
+```
+
+to the require section of your `composer.json` file.
+
 ## Testing
 
 Create docker image *yii2-rest-backend* for testing environment.
