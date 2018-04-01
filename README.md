@@ -1,4 +1,4 @@
-# Yii2 REST backend [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.html) [![GitHub version](https://img.shields.io/badge/version-0.1-red.svg)] [![Build Status](https://travis-ci.org/oteixido/yii2-rest-backend.svg?branch=master)](https://travis-ci.org/oteixido/yii2-rest-backend)
+# Yii2 REST backend [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.html) [![GitHub version](https://img.shields.io/badge/version-0.1-red.svg)](https://github.com/oteixido/yii2-rest-backend/releases) [![Build Status](https://travis-ci.org/oteixido/yii2-rest-backend.svg?branch=master)](https://travis-ci.org/oteixido/yii2-rest-backend)
 
 REST backend for Yii2 applications.
 
