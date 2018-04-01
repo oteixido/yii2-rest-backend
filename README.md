@@ -51,7 +51,7 @@ $ docker run -it --rm -v "$PWD":/app -w /app yii2-rest-backend composer install
 Execute tests.
 
 ```bash
-$ docker run -it --rm -v "$PWD":/app -w /app yii2-rest-backend ./vendor/bin/codecept run
+$ docker run -it --rm -v "$PWD":/app -w /app yii2-rest-backend ./vendor/bin/codecept run --coverage
 ```
 
 ## License
