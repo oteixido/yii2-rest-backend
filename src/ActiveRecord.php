@@ -87,14 +87,6 @@ abstract class ActiveRecord extends \yii\db\BaseActiveRecord
     /**
      * @inheritdoc
      */
-    public function hasMany($class, $link)
-    {
-        throw new NotSupportedException(__METHOD__ . ' is not supported.');
-    }
-
-    /**
-     * @inheritdoc
-     */
     public static function updateAll($attributes, $condition = null)
     {
         throw new NotSupportedException(__METHOD__ . ' is not supported.');
