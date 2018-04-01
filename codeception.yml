@@ -15,3 +15,7 @@ modules:
         - Asserts
         - Yii2:
             configFile: 'tests/config/test.php'
+coverage:
+    enabled: true
+    include:
+        - src/*
