@@ -1,4 +1,4 @@
-# Yii2 REST backend [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.html) [![Build Status](https://travis-ci.org/oteixido/yii2-rest-backend.svg?branch=master)](https://travis-ci.org/oteixido/yii2-rest-backend)
+# Yii2 REST backend [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.html) [![GitHub version](https://img.shields.io/badge/version-0.1-red.svg)] [![Build Status](https://travis-ci.org/oteixido/yii2-rest-backend.svg?branch=master)](https://travis-ci.org/oteixido/yii2-rest-backend)
 
 REST backend for Yii2 applications.
 
@@ -15,10 +15,30 @@ $ composer require oteixido/yii2-rest-backend "*"
 or add
 
 ```
-"caminstech/yii2-rest": "*"
+"oteixido/yii2-rest-backend": "*"
 ```
 
 to the require section of your `composer.json` file.
+
+## Configuration
+
+To use this extension, simply add the following code in your application configuration:
+
+```php
+return [
+    //....
+    'components' => [
+        'httpClient' => [
+            'class' => '\oteixido\rest\http\HttpClient',
+            'baseUrl' => 'https://localhost.localdomain/api/v1',
+            'username' => 'username',    // Default no username
+            'password' => 'password',    // Default no password
+            'timeout' => 5,              // Default 10 seconds
+            'sslVerify' => false,        // Default true
+        ],
+    ],
+];
+```
 
 ## Testing
 
